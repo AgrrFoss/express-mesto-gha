@@ -28,7 +28,11 @@ module.exports.createUser = (req, res) => {
 };
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    {new: true}
+    )
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.valueType !== "string") {
@@ -44,7 +48,10 @@ module.exports.updateUserInfo = (req, res) => {
 module.exports.updateAvatar = async (req, res) => {
   try{
   const { avatar } = req.body;
-  const newAva = await User.findByIdAndUpdate(req.user._id, { avatar });
+  const newAva = await User.findByIdAndUpdate(req.user._id,
+    { avatar },
+    {new: true}
+    );
   res.status(200).send(newAva)
   } catch (err) {
     if (err.valueType !== "string") {

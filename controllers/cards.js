@@ -40,12 +40,12 @@ module.exports.setLike = async (req, res) => {
       { $addToSet: { likes: req.user._id } },
       { new: true },
     );
-    res.status(200).send(card);
+    res.status(201).send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+    res.status(500).send({ message: `Произошла ошибка на сервере` });
   }
 };
 module.exports.deleteLike = async (req, res) => {
