@@ -1,16 +1,65 @@
 const Card = require('../models/card');
-/*
-module.exports.getUsers = (req, res) => {
-  User.create...
+
+module.exports.getCards = async (req, res) => {
+  try {
+    const cards = await Card.find({});
+    res.status(200).send(cards);
+  } catch (e) {
+    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+  }
 };
 
-module.exports.getUser = (req, res) => {
-  User.create...
+module.exports.createCard = async (req, res) => {
+  try {
+    const { name, link } = req.body;
+    const owner = req.user._id;
+    const card = await Card.create({ name, link, owner });
+    res.status(200).send(card);
+  } catch (e) {
+    if (e.name === 'ValidationError') {
+      return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+    }
+    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+  }
 };
-*/
-module.exports.createCard = (req, res) => {
-  const { name, about, avatar } = req.body;
-  Card.create({ name, about, avatar })
-    .then(user => res.send( { data: user }))
-    .catch(err => res.status(500).send({message: 'Произошла ошибка'}));
+
+module.exports.deleteCard = async (req, res) => {
+  try {
+    await Card.findByIdAndRemove(req.params.cardId);
+  } catch (e) {
+    if (e.name === 'CastError') {
+      return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+    }
+    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+  }
+};
+module.exports.setLike = async (req, res) => {
+  try {
+    const card = await Card.findByIdAndUpdate(
+      req.params.cardId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    );
+    res.send(card);
+  } catch (e) {
+    if (e.name === 'CastError') {
+      return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+    }
+    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+  }
+};
+module.exports.deleteLike = async (req, res) => {
+  try {
+    const card = await Card.findByIdAndUpdate(
+      req.params.cardId,
+      { $pull: { likes: req.user._id } },
+      { new: true },
+    );
+    res.send(card);
+  } catch (e) {
+    if (e.name === 'CastError') {
+      return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+    }
+    res.status(500).send({ message: 'Произошла ошибка на сервере' });
+  }
 };
