@@ -40,6 +40,24 @@ module.exports.updateUserInfo = (req, res) => {
       res.status(500).send({ message:"Произошла ошибка на сервере." })
     });
 };
+
+module.exports.updateAvatar = async (req, res) => {
+  try{
+  const { avatar } = req.body;
+  const newAva = await User.findByIdAndUpdate(req.user._id, { avatar });
+  res.status(200).send(newAva)
+  } catch (err) {
+    if (err.valueType !== "string") {
+      return res.status(400).send({ message: "Неверный тип данных"});
+    };
+    if (err.name === 'CastError') {
+      return res.status(404).send({ message: "Пользователь не найден"});
+    };
+    res.status(500).send({ message: "Произошла ошибка на сервере"});
+  };
+};
+
+/*
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar })
@@ -54,3 +72,4 @@ module.exports.updateAvatar = (req, res) => {
       res.status(500).send(err);
     });
 };
+*/

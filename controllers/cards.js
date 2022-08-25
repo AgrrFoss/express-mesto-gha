@@ -40,7 +40,7 @@ module.exports.setLike = async (req, res) => {
       { $addToSet: { likes: req.user._id } },
       { new: true },
     );
-    res.send(card);
+    res.status(200).send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
@@ -55,7 +55,7 @@ module.exports.deleteLike = async (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true },
     );
-    res.send(card);
+    res.status(200).send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
