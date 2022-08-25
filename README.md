@@ -30,3 +30,5 @@ express-mesto-gha/actions/workflows/tests-14-sprint.yml)
 
 `npm run start` — запускает сервер   
 `npm run dev` — запускает сервер с hot-reload
+
+Сслыка на репозиторий: https://github.com/AgrrFoss/express-mesto-gha.git
