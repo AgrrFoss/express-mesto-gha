@@ -33,7 +33,7 @@ module.exports.deleteCard = async (req, res) => {
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
-
+/*
 module.exports.setLike = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
@@ -49,6 +49,27 @@ module.exports.setLike = async (req, res) => {
     res.status(500).send({ message: `Произошла ошибка на сервере` });
   }
 };
+*/
+
+module.exports.setLike = async (req, res) => {
+  try {
+    const card = await Card.findByIdAndUpdate(
+      req.params.cardId,
+      { $addToSet: { likes: req.user._id } },
+      { new: true },
+    );
+    if(card) {
+    res.status(201).send(card);
+    } else {
+      return res.status(404).send({ message: `Ошибка. Карточка с таким _id не найдена` });
+    }
+  } catch (e) {
+    if (e.name === 'CastError') {
+      return res.status(400).send({ message: `Ошибка. Передан некорректный _id карточки.` });
+    }
+    res.status(500).send({ message: `Произошла ошибка на сервере` });
+  }
+};
 
 module.exports.deleteLike = async (req, res) => {
   try {
@@ -57,7 +78,11 @@ module.exports.deleteLike = async (req, res) => {
       { $pull: { likes: req.user._id } },
       { new: true },
     );
-    res.status(200).send(card);
+    if(card) {
+      res.status(201).send(card);
+      } else {
+        return res.status(404).send({ message: `Ошибка. Карточка с таким _id не найдена` });
+      }
   } catch (e) {
     if (e.name === 'CastError') {
       return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
