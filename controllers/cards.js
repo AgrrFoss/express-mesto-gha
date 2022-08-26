@@ -18,8 +18,9 @@ module.exports.createCard = async (req, res) => {
   } catch (e) {
     if (e.name === 'ValidationError') {
       res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+    } else {
+      res.status(500).send({ message: 'Произошла ошибка на сервере' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
 
@@ -34,8 +35,9 @@ module.exports.deleteCard = async (req, res) => {
   } catch (e) {
     if (e.name === 'CastError') {
       res.status(400).send({ message: 'Некорректный Id карточки.' });
+    } else {
+      res.status(500).send({ message: 'Произошла ошибка на сервере' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
 
@@ -54,8 +56,9 @@ module.exports.setLike = async (req, res) => {
   } catch (e) {
     if (e.name === 'CastError') {
       res.status(400).send({ message: 'Ошибка. Передан некорректный _id карточки.' });
+    } else {
+      res.status(500).send({ message: 'Произошла ошибка на сервере' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
 
@@ -74,7 +77,8 @@ module.exports.deleteLike = async (req, res) => {
   } catch (e) {
     if (e.name === 'CastError') {
       res.status(400).send({ message: 'Передан несуществующий _id карточки.' });
+    } else {
+      res.status(500).send({ message: 'Произошла ошибка на сервере' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };

@@ -18,8 +18,9 @@ module.exports.getUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: 'Передан некорректный _id' });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка на сервере.' });
       }
-      res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
 };
 module.exports.createUser = (req, res) => {
@@ -29,30 +30,11 @@ module.exports.createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка на сервере.' });
       }
-      res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
 };
-/*
-module.exports.updateUserInfo = (req, res) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, about },
-    {new: true}
-    )
-    .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.valueType !== "string") {
-        return res.status(400).send({ message: "Неверный тип данных"});
-      }
-      if (err.name === 'CastError') {
-        return res.status(404).send({ message: "Пользователь не найден"});
-      }
-      res.status(500).send({ message:"Произошла ошибка на сервере." })
-    });
-};
-*/
 
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
@@ -68,8 +50,9 @@ module.exports.updateUserInfo = (req, res) => {
       }
       if (err.name === 'CastError') {
         res.status(404).send({ message: 'Пользователь не найден' });
+      } else {
+        res.status(500).send({ message: 'Произошла ошибка на сервере.' });
       }
-      res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
 };
 
@@ -88,24 +71,8 @@ module.exports.updateAvatar = async (req, res) => {
     }
     if (err.name === 'CastError') {
       res.status(404).send({ message: 'Пользователь не найден' });
+    } else {
+      res.status(500).send({ message: 'Произошла ошибка на сервере' });
     }
-    res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
-
-/*
-module.exports.updateAvatar = (req, res) => {
-  const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar })
-    .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.valueType !== "string") {
-        return res.status(400).send({ message: "Неверный тип данных"});
-      }
-      if (err.name === 'CastError') {
-        return res.status(404).send({ message: "Пользователь не найден"});
-      }
-      res.status(500).send(err);
-    });
-};
-*/
