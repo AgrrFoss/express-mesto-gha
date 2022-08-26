@@ -85,7 +85,7 @@ module.exports.deleteLike = async (req, res) => {
       }
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+      return res.status(400).send({ message: 'Передан несуществующий _id карточки.' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }

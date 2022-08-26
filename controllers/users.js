@@ -5,18 +5,7 @@ module.exports.getUsers = (req, res) => {
     .then((users) => res.send(users))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
-/*
-module.exports.getUser = (req, res) => {
-  User.findById(req.params.UserId)
-    .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(400).send({ message: "Пользователь по указанному _id не найден." });
-      }
-      res.status(500).send({ message:'Произошла ошибка на сервере.' })
-    });
-};
-*/
+
 module.exports.getUser = (req, res) => {
   User.findById(req.params.UserId)
     .then((user) => {
@@ -44,6 +33,7 @@ module.exports.createUser = (req, res) => {
       res.status(500).send({ message:"Произошла ошибка на сервере." });
     });
 };
+/*
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
@@ -61,6 +51,32 @@ module.exports.updateUserInfo = (req, res) => {
       }
       res.status(500).send({ message:"Произошла ошибка на сервере." })
     });
+};
+*/
+
+module.exports.updateUserInfo = (req, res) => {
+  const { name, about } = req.body;
+  const nameArr = name.split('');
+  const aboutArr = about.split('');
+  if (nameArr.length >= 2 && nameArr.length <= 30 && aboutArr.length >= 2 && aboutArr.length <=30) {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    {new: true}
+    )
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: "Неверный тип данных"});
+      }
+      if (err.name === 'CastError') {
+        return res.status(404).send({ message: "Пользователь не найден"});
+      }
+      res.status(500).send({ message:"Произошла ошибка на сервере." })
+    });
+  } else {
+    return res.status(400).send({ message: "Неверный тип данных, Имя и Информация должны содержать от 2 до 30 символов"});
+  }
 };
 
 module.exports.updateAvatar = async (req, res) => {
