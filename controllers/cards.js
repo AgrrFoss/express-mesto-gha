@@ -26,6 +26,7 @@ module.exports.createCard = async (req, res) => {
 module.exports.deleteCard = async (req, res) => {
   try {
     await Card.findByIdAndRemove(req.params.cardId);
+    res.status(200).send({ message: 'Карточка удалена'});
   } catch (e) {
     if (e.name === 'CastError') {
       return res.status(400).send({ message: 'Карточка с указанным _id не найдена.' });
