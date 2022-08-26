@@ -17,7 +17,7 @@ module.exports.createCard = async (req, res) => {
     res.status(200).send(card);
   } catch (e) {
     if (e.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+      res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
@@ -29,11 +29,11 @@ module.exports.deleteCard = async (req, res) => {
     if (deleteCard) {
       res.status(200).send({ message: 'Карточка удалена' });
     } else {
-      return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
     }
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(400).send({ message: 'Некорректный Id карточки.' });
+      res.status(400).send({ message: 'Некорректный Id карточки.' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
@@ -49,11 +49,11 @@ module.exports.setLike = async (req, res) => {
     if (card) {
       res.status(200).send(card);
     } else {
-      return res.status(404).send({ message: 'Ошибка. Карточка с таким _id не найдена' });
+      res.status(404).send({ message: 'Ошибка. Карточка с таким _id не найдена' });
     }
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(400).send({ message: 'Ошибка. Передан некорректный _id карточки.' });
+      res.status(400).send({ message: 'Ошибка. Передан некорректный _id карточки.' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
@@ -69,11 +69,11 @@ module.exports.deleteLike = async (req, res) => {
     if (card) {
       res.status(200).send(card);
     } else {
-      return res.status(404).send({ message: 'Ошибка. Карточка с таким _id не найдена' });
+      res.status(404).send({ message: 'Ошибка. Карточка с таким _id не найдена' });
     }
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(400).send({ message: 'Передан несуществующий _id карточки.' });
+      res.status(400).send({ message: 'Передан несуществующий _id карточки.' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }

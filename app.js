@@ -18,9 +18,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', require('./routes/users'));
+
 app.use('/cards', require('./routes/cards'));
+
 app.patch('/404', (req, res) => {
-  res.status(404).send({ message: "Страница не найдена" });
+  res.status(404).send({ message: 'Страница не найдена' });
 });
 
 async function main() {
@@ -30,6 +32,7 @@ async function main() {
 
   await app.listen(PORT);
 
+  // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
 }
 

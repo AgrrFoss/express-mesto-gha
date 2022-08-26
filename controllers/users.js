@@ -17,7 +17,7 @@ module.exports.getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(400).send({ message: 'Передан некорректный _id' });
+        res.status(400).send({ message: 'Передан некорректный _id' });
       }
       res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
@@ -28,7 +28,7 @@ module.exports.createUser = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
+        res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
       }
       res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
@@ -64,10 +64,10 @@ module.exports.updateUserInfo = (req, res) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'Неверный тип данных' });
+        res.status(400).send({ message: 'Неверный тип данных' });
       }
       if (err.name === 'CastError') {
-        return res.status(404).send({ message: 'Пользователь не найден' });
+        res.status(404).send({ message: 'Пользователь не найден' });
       }
       res.status(500).send({ message: 'Произошла ошибка на сервере.' });
     });
@@ -84,10 +84,10 @@ module.exports.updateAvatar = async (req, res) => {
     res.status(200).send(newAva);
   } catch (err) {
     if (err.valueType !== 'string') {
-      return res.status(400).send({ message: 'Неверный тип данных' });
+      res.status(400).send({ message: 'Неверный тип данных' });
     }
     if (err.name === 'CastError') {
-      return res.status(404).send({ message: 'Пользователь не найден' });
+      res.status(404).send({ message: 'Пользователь не найден' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
