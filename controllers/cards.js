@@ -48,7 +48,7 @@ module.exports.setLike = async (req, res) => {
       { new: true },
     );
     if(card) {
-    res.status(201).send(card);
+    res.status(200).send(card);
     } else {
       return res.status(404).send({ message: `Ошибка. Карточка с таким _id не найдена` });
     }
@@ -68,7 +68,7 @@ module.exports.deleteLike = async (req, res) => {
       { new: true },
     );
     if(card) {
-      res.status(201).send(card);
+      res.status(200).send(card);
       } else {
         return res.status(404).send({ message: `Ошибка. Карточка с таким _id не найдена` });
       }

@@ -56,13 +56,10 @@ module.exports.updateUserInfo = (req, res) => {
 
 module.exports.updateUserInfo = (req, res) => {
   const { name, about } = req.body;
-  const nameArr = name.split('');
-  const aboutArr = about.split('');
-  if (nameArr.length >= 2 && nameArr.length <= 30 && aboutArr.length >= 2 && aboutArr.length <=30) {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    {new: true}
+    {new: true, runValidators: true}
     )
     .then((user) => res.send(user))
     .catch((err) => {
@@ -74,9 +71,6 @@ module.exports.updateUserInfo = (req, res) => {
       }
       res.status(500).send({ message:"Произошла ошибка на сервере." })
     });
-  } else {
-    return res.status(400).send({ message: "Неверный тип данных, Имя и Информация должны содержать от 2 до 30 символов"});
-  }
 };
 
 module.exports.updateAvatar = async (req, res) => {
