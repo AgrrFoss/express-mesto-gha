@@ -5,12 +5,30 @@ module.exports.getUsers = (req, res) => {
     .then((users) => res.send(users))
     .catch((err) => res.status(500).send({ message: err.message }));
 };
+/*
 module.exports.getUser = (req, res) => {
   User.findById(req.params.UserId)
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(404).send({ message: "Пользователь по указанному _id не найден." });
+        return res.status(400).send({ message: "Пользователь по указанному _id не найден." });
+      }
+      res.status(500).send({ message:'Произошла ошибка на сервере.' })
+    });
+};
+*/
+module.exports.getUser = (req, res) => {
+  User.findById(req.params.UserId)
+    .then((user) => {
+      if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "Пользователь с указанным _id не найден." });
+    }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).send({ message: "Передан некорректный _id" });
       }
       res.status(500).send({ message:'Произошла ошибка на сервере.' })
     });

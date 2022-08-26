@@ -28,11 +28,12 @@ module.exports.deleteCard = async (req, res) => {
     await Card.findByIdAndRemove(req.params.cardId);
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      return res.status(400).send({ message: 'Карточка с указанным _id не найдена.' });
     }
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
 };
+
 module.exports.setLike = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
@@ -43,11 +44,12 @@ module.exports.setLike = async (req, res) => {
     res.status(201).send(card);
   } catch (e) {
     if (e.name === 'CastError') {
-      return res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+      return res.status(400).send({ message: `Ошибка. Передан некорректный _id карточки.` });
     }
     res.status(500).send({ message: `Произошла ошибка на сервере` });
   }
 };
+
 module.exports.deleteLike = async (req, res) => {
   try {
     const card = await Card.findByIdAndUpdate(
