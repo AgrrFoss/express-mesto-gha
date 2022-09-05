@@ -11,22 +11,6 @@ module.exports.getCards = async (req, res, next) => {
     next(e);
   }
 };
-/*
-module.exports.createCard = async (req, res) => {
-  try {
-    const { name, link } = req.body;
-    const owner = req.user._id;
-    const card = await Card.create({ name, link, owner });
-    res.send(card);
-  } catch (e) {
-    if (e.name === 'ValidationError') {
-      res.status(ERROR_BAD_REQ).send({ message: 'Переданы некорректные данные при создании карточки' });
-    } else {
-      res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере' });
-    }
-  }
-};
-*/
 
 module.exports.createCard = async (req, res, next) => {
   try {
@@ -77,8 +61,9 @@ module.exports.deleteCard = (req, res, next) => {
       } else {
         const idString = String(card.owner);
         if (idString === req.user._id) {
-          Card.findByIdAndRemove(req.params.cardId);
+          Card.deleteOne({ ObjectId: card._id });
           res.send({ message: 'Карточка удалена' });
+          // res.send(card._id);
         } else {
           throw new AuthError('ошибка авторизации');
         }
