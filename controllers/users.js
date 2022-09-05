@@ -123,10 +123,10 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'some-secret-key',
+        '4jsx',
         { expiresIn: '7d' },
       );
-      res.send(token);
+      //res.send({ token });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
@@ -173,7 +173,7 @@ module.exports.updateAvatar = async (req, res, next) => {
     const newAva = await User.findByIdAndUpdate(
       req.user._id,
       { avatar },
-      { new: true },
+      { new: true, runValidators: true },
     );
     if (newAva) {
       res.send(newAva);
@@ -182,7 +182,7 @@ module.exports.updateAvatar = async (req, res, next) => {
     }
   } catch (e) {
     if (e.name === 'ValidationError') {
-      const err = new BadReqError('Неверный тип данных');
+      const err = new BadReqError('Неверный тип данных. Введите ссылку на изображение');
       next(err);
     }
     if (e.name === 'CastError') {
