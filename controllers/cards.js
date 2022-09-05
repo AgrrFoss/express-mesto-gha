@@ -62,9 +62,9 @@ module.exports.deleteCard = (req, res, next) => {
       } else {
         const idString = String(card.owner);
         if (idString === req.user._id) {
-          Card.deleteOne({ ObjectId: card._id });
-          res.send({ message: 'Карточка удалена' });
-          // res.send(card._id);
+          Card.deleteOne(card)
+            .then(() => res.send({ message: 'Карточка удалена' }))
+            .catch(next);
         } else {
           throw new NoRightsError('Вы не можете удалить чужую карточку');
         }
