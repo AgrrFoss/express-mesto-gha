@@ -11,25 +11,6 @@ module.exports.getUsers = (req, res, next) => {
     .then((users) => res.send(users))
     .catch(next);
 };
-/*
-module.exports.getUser = (req, res) => {
-  User.findById(req.params.UserId)
-    .then((user) => {
-      if (user) {
-        res.send(user);
-      } else {
-        res.status(ERROR_NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
-      }
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(ERROR_BAD_REQ).send({ message: 'Передан некорректный _id юзера' });
-      } else {
-        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере.' });
-      }
-    });
-};
-*/
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
@@ -73,50 +54,9 @@ module.exports.createUser = (req, res, next) => {
           }
         });
     })
-    //.catch((err) => res.send(err)); Так было раньше
     .catch(next);
 };
 
-/*
-module.exports.createUser = (req, res) => {
-  const {
-    email, password, name, about, avatar,
-  } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        email, password: hash, name, about, avatar,
-      })
-        .then((user) => res.send(user))
-        .catch((err) => {
-          if (err.name === 'ValidationError') {
-            res.status(ERROR_BAD_REQ).send({ message: `${err}Переданы некорректные данные при создании пользователя.` });
-          } else {
-            res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере.' });
-          }
-        });
-    })
-    .catch((err) => res.send(err));
-};
-
-module.exports.login = (req, res) => {
-  const { email, password } = req.body;
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        'some-secret-key',
-        { expiresIn: '7d' },
-      );
-      res.send(token);
-      })
-      .catch((err) => {
-        res
-          .status(401)
-          .send({ message: err.message });
-      });
-  };
-*/
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
