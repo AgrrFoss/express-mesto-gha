@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const BadReqError = require('../errors/bad_req');
 const NotFoundError = require('../errors/not_found');
 const AuthError = require('../errors/auth_err');
+const NoRightsError = require('../errors/no_rights');
 
 module.exports.getCards = async (req, res, next) => {
   try {
@@ -65,7 +66,7 @@ module.exports.deleteCard = (req, res, next) => {
           res.send({ message: 'Карточка удалена' });
           // res.send(card._id);
         } else {
-          throw new AuthError('ошибка авторизации');
+          throw new NoRightsError('Вы не можете удалить чужую карточку');
         }
       }
     })

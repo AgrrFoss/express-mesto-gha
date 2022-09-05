@@ -73,10 +73,7 @@ module.exports.login = (req, res, next) => {
       })
         .end();
     })
-    .catch((e) => {
-      const err = new AuthError('Почта или пароль не правильные');
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateUserInfo = (req, res, next) => {
