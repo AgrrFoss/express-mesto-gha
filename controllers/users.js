@@ -11,8 +11,27 @@ module.exports.getUsers = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUser = (req, res, next) => {
+module.exports.getMe = (req, res, next) => {
   User.findById(req.user._id)
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        throw new NotFoundError('Пользователь с указанным _id не найден.');
+      }
+    })
+    .catch((e) => {
+      if (e.name === 'CastError') {
+        const err = new BadReqError('Передан некорректный _id юзера');
+        next(err);
+      } else {
+        next(e);
+      }
+    });
+};
+
+module.exports.getUser = (req, res, next) => {
+  User.findById(req.params.userId)
     .then((user) => {
       if (user) {
         res.send(user);
@@ -41,7 +60,7 @@ module.exports.createUser = (req, res, next) => {
       })
         .then((user) => {
           const returnUserInfo = user;
-          delete returnUserInfo["password"];
+          delete returnUserInfo.password;
           res.send(returnUserInfo);
         })
         .catch((e) => {
