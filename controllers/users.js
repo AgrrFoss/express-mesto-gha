@@ -59,9 +59,9 @@ module.exports.createUser = (req, res, next) => {
         email, password: hash, name, about, avatar,
       })
         .then((user) => {
-          const returnUserInfo = user;
-          delete returnUserInfo.password;
-          res.send(returnUserInfo);
+          const userInfo = user.toObject();
+          delete userInfo.password;
+          res.send(userInfo);
         })
         .catch((e) => {
           if (e.code === 11000) {
