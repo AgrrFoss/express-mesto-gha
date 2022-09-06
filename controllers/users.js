@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const BadReqError = require('../errors/bad_req');
 const NotFoundError = require('../errors/not_found');
-const AuthError = require('../errors/auth_err');
 const RepeatEmailError = require('../errors/repeat_email_error');
 
 module.exports.getUsers = (req, res, next) => {
@@ -40,7 +39,11 @@ module.exports.createUser = (req, res, next) => {
       User.create({
         email, password: hash, name, about, avatar,
       })
-        .then((user) => res.send(user))
+        .then((user) => {
+          const returnUserInfo = user;
+          delete returnUserInfo["password"];
+          res.send(returnUserInfo);
+        })
         .catch((e) => {
           if (e.code === 11000) {
             const err = new RepeatEmailError('Пользователь с таким Email уже зарегистрирован');
@@ -71,6 +74,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       })
+        .send({ token })
         .end();
     })
     .catch(next);

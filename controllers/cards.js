@@ -1,7 +1,6 @@
 const Card = require('../models/card');
 const BadReqError = require('../errors/bad_req');
 const NotFoundError = require('../errors/not_found');
-const AuthError = require('../errors/auth_err');
 const NoRightsError = require('../errors/no_rights');
 
 module.exports.getCards = async (req, res, next) => {
