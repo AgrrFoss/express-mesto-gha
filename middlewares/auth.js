@@ -8,15 +8,6 @@ module.exports = (req, res, next) => {
     next(err);
     return;
   }
-  /*
-  const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
-    res
-      .status(401)
-      .send({ message: 'Необходима авторизация. отсутствует токен' });
-  }
-  */
-  // const token = authorization.replace('Bearer ', '');
   let payload;
 
   try {

@@ -67,6 +67,7 @@ module.exports.createUser = (req, res, next) => {
           if (e.code === 11000) {
             const err = new RepeatEmailError('Пользователь с таким Email уже зарегистрирован');
             next(err);
+            return;
           }
           if (e.name === 'ValidationError') {
             const err = new BadReqError('Переданы некорректные данные при создании пользователя.');
@@ -117,6 +118,7 @@ module.exports.updateUserInfo = (req, res, next) => {
       if (e.name === 'ValidationError') {
         const err = new BadReqError('Неверный тип данных');
         next(err);
+        return;
       }
       if (e.name === 'CastError') {
         const err = new BadReqError('Передан некорректный _id юзера');
@@ -144,6 +146,7 @@ module.exports.updateAvatar = async (req, res, next) => {
     if (e.name === 'ValidationError') {
       const err = new BadReqError('Неверный тип данных. Введите ссылку на изображение');
       next(err);
+      return;
     }
     if (e.name === 'CastError') {
       const err = new BadReqError('Передан некорректный _id юзера');

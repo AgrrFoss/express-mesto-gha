@@ -27,31 +27,6 @@ module.exports.createCard = async (req, res, next) => {
     }
   }
 };
-/*
-module.exports.deleteCard = (req, res) => {
-  Card.findById(req.params.cardId)
-    .then((card) => {
-      if (!card) {
-        res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с таким _id не найдена.' });
-      } else {
-        const idString = String(card.owner);
-        if (idString === req.user._id) {
-          Card.findByIdAndRemove(req.params.cardId);
-          res.send({ message: 'Карточка удалена' });
-        } else {
-          res.status(ERROR_AUTH).send({ message: 'ошибка авторизации' });
-        }
-      }
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(ERROR_BAD_REQ).send({ message: 'Некорректный Id карточки.' });
-      } else {
-        res.status(ERROR_SERVER).send({ message: 'Произошла ошибка на сервере' });
-      }
-    });
-};
-*/
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
