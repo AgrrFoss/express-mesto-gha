@@ -12,7 +12,7 @@ userRouter.get(
   '/:userId',
   celebrate({
     params: Joi.object().keys({
-      userId: Joi.string().alphanum().length(24),
+      userId: Joi.string().pattern(/[\da-f]{24}/),
     }),
   }),
   getUser,
